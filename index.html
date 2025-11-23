@@ -1,10 +1,83 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Nina Test</title>
+<meta charset="UTF-8">
+<title>NINA — Cyberpunk Test</title>
+<style>
+    body {
+        margin: 0;
+        font-family: monospace;
+        background-color: black;
+        color: #00ffea;
+        overflow: hidden;
+    }
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+    }
+    .title {
+        position: absolute;
+        top: 40%;
+        width: 100%;
+        text-align: center;
+        font-size: 70px;
+        font-weight: bold;
+        letter-spacing: 10px;
+        color: #00fff2;
+        text-shadow: 0 0 10px #00fff2, 0 0 20px cyan;
+        animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+        0% { text-shadow: 2px 2px cyan; }
+        20% { text-shadow: -2px 0px magenta; }
+        40% { text-shadow: 2px -2px lime; }
+        60% { text-shadow: -2px -2px cyan; }
+        80% { text-shadow: 2px 2px lime; }
+        100% { text-shadow: -2px 0px cyan; }
+    }
+    .tagline {
+        position: absolute;
+        top: 55%;
+        width: 100%;
+        text-align: center;
+        font-size: 23px;
+        color: #00ffea;
+        opacity: 0.8;
+    }
+</style>
 </head>
 <body>
-<h1>Welcome Nina — Bug Bounty Test</h1>
+<canvas id="matrix"></canvas>
+<div class="title">N I N A</div>
+<div class="tagline">Ethical Hacking — Bug Bounty Playground</div>
+<script>
+const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const letters = "abcdefghijklmnopqrstuvwxyz0123456789<>$#@+=";
+    const matrix = letters.split("");
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00ffea";
+        ctx.font = fontSize + "px monospace";
+        for (let i = 0; i < drops.length; i++) {
+            const text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(draw, 40);
+</script>
 </body>
 </html>
